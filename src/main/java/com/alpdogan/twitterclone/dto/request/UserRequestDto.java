@@ -1,4 +1,4 @@
-package dto.request;
+package com.alpdogan.twitterclone.dto.request;
 
 import lombok.Data;
 
