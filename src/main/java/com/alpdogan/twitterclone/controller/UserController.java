@@ -1,9 +1,9 @@
 package com.alpdogan.twitterclone.controller;
 
+import com.alpdogan.twitterclone.dto.request.SaveUserRequestDto;
 import com.alpdogan.twitterclone.dto.response.UserResponseDto;
 import com.alpdogan.twitterclone.entity.User;
 import com.alpdogan.twitterclone.service.UserService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,9 +27,9 @@ public class UserController {
         return userService.getUserById(userId);
     }
 
-    @PostMapping
-    public User addUser(@RequestBody User user) {
-        return userService.addUser(user);
+    @PostMapping("/addUser")
+    public User addUser(@RequestBody SaveUserRequestDto saveUserRequestDto) {
+        return userService.addUser(saveUserRequestDto);
     }
 
     @DeleteMapping("/{userId}")
