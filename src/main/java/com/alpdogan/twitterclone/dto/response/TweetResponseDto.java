@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class TweetResponseDto {
 
+    int userId;
     String text;
 
 }
