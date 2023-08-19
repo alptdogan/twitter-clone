@@ -17,4 +17,8 @@ public class Tweet {
     @Column(columnDefinition = "text")
     String text;
 
+    @ManyToOne
+    @JoinColumn(name = "user")
+    private User user;
+
 }
