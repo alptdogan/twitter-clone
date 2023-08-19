@@ -3,7 +3,9 @@ package com.alpdogan.twitterclone.service;
 import com.alpdogan.twitterclone.dto.request.SaveTweetRequestDto;
 import com.alpdogan.twitterclone.dto.response.TweetResponseDto;
 import com.alpdogan.twitterclone.entity.Tweet;
+import com.alpdogan.twitterclone.entity.User;
 import com.alpdogan.twitterclone.repository.TweetRepository;
+import com.alpdogan.twitterclone.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +17,13 @@ public class TweetService {
 
     private TweetRepository tweetRepository;
 
+    private UserRepository userRepository;
+
     private ModelMapper modelMapper;
 
-    public TweetService(TweetRepository tweetRepository, ModelMapper modelMapper) {
+    public TweetService(TweetRepository tweetRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.tweetRepository = tweetRepository;
+        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -44,7 +49,15 @@ public class TweetService {
 
     public Tweet addTweet(SaveTweetRequestDto saveTweetRequestDto) {
 
-        Tweet tweet = modelMapper.map(saveTweetRequestDto, Tweet.class);
+        String textRequest = saveTweetRequestDto.getText();
+        int userIdRequest = saveTweetRequestDto.getUserId();
+
+        User user = userRepository.findById(userIdRequest).get();
+
+        Tweet tweet = new Tweet();
+
+        tweet.setText(textRequest);
+        tweet.setUser(user);
 
         return tweetRepository.save(tweet);
 
