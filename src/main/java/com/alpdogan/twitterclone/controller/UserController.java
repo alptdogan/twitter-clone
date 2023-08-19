@@ -1,6 +1,7 @@
 package com.alpdogan.twitterclone.controller;
 
 import com.alpdogan.twitterclone.dto.request.SaveUserRequestDto;
+import com.alpdogan.twitterclone.dto.request.UpdateUserRequestDto;
 import com.alpdogan.twitterclone.dto.response.UserResponseDto;
 import com.alpdogan.twitterclone.entity.User;
 import com.alpdogan.twitterclone.service.UserService;
@@ -30,6 +31,11 @@ public class UserController {
     @PostMapping("/addUser")
     public User addUser(@RequestBody SaveUserRequestDto saveUserRequestDto) {
         return userService.addUser(saveUserRequestDto);
+    }
+
+    @PutMapping("updateUser")
+    public String updateUserById(@RequestBody UpdateUserRequestDto updateUserRequestDto) {
+        return userService.updateUserById(updateUserRequestDto);
     }
 
     @DeleteMapping("/{userId}")
