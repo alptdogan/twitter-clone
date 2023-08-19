@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "comment")
+@Table(name = "comments")
 public class Comment {
 
     @Id
@@ -24,4 +24,5 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "tweet")
     Tweet tweet;
+
 }
