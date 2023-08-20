@@ -17,6 +17,12 @@ public class Tweet {
     @Column(columnDefinition = "text")
     String text;
 
+/*    @ManyToOne(fetch = FetchType.LAZY, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.DETACH,
+            CascadeType.REFRESH
+    })*/
     @ManyToOne
     @JoinColumn(name = "user")
     private User user;
