@@ -62,27 +62,40 @@ public class UserService {
 
     }
 
-    public String updateUserById(UpdateUserRequestDto updateUserRequestDto) {
+    public String updateUser(UpdateUserRequestDto updateUserRequestDto) throws Exception {
 
         int idUserRequest = updateUserRequestDto.getId();
         String nameUserRequest = updateUserRequestDto.getUsername();
 
         Optional<User> userOptional = userRepository.findById(idUserRequest);
+        User user = userOptional.get();
 
         if (userOptional.isPresent()) {
-
-            User user = userOptional.get();
             user.setUsername(nameUserRequest);
-
-            userRepository.save(user);
+            if (user.getUsername().isBlank()) {
+                throw new Exception("Username Cannot Be Empty.");
+            }else {
+                userRepository.save(user);
+                return "User has been updated successfully.";
+            }
+        }else {
+            throw new Exception("Cannot Find Any User To Update With The Specified ID");
         }
-
-        return "User has been updated successfully.";
 
     }
 
-    public void deleteUserById(int userId) {
-        userRepository.deleteById(userId);
+    public String deleteUserById(Integer userId) throws Exception {
+
+        Optional<User> userOptional = userRepository.findById(userId);
+        User user = userOptional.get();
+
+        if (userOptional.isPresent()) {
+            userRepository.delete(user);
+            return "User Has Been Deleted.";
+        }else {
+            throw new Exception("Cannot Find Any User To Delete With The Specified ID.");
+        }
+
     }
 
     public User getUserByUserName(String username) {
