@@ -23,8 +23,14 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserResponseDto> getAllUsers(){
-        return userService.getAllUsers();
+    public ResponseEntity<?> getAllUsers(){
+
+        try {
+            List<UserResponseDto> userResponseDtos = userService.getAllUsers();
+            return new ResponseEntity<>(userResponseDtos, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(new ResponseModel("There Is No User To Be Listed."), HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/{userId}")

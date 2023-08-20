@@ -23,22 +23,20 @@ public class UserService {
         this.modelMapper = modelMapper;
     }
 
-    public List<UserResponseDto> getAllUsers() {
+    public List<UserResponseDto> getAllUsers() throws Exception {
 
         Iterable<User> users = userRepository.findAll();
-
         List<UserResponseDto> userResponseDtos = new ArrayList<>();
 
         if (users.iterator().hasNext()) {
-
             for (User user : users) {
                 UserResponseDto userResponseDto = modelMapper.map(user, UserResponseDto.class);
                 userResponseDtos.add(userResponseDto);
             }
-
+            return userResponseDtos;
+        }else {
+            throw new Exception();
         }
-
-        return userResponseDtos;
 
     }
 
