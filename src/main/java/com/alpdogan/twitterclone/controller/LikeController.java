@@ -15,6 +15,11 @@ public class LikeController {
         this.likeService = likeService;
     }
 
+    @GetMapping("/{likeId}")
+    public Like getLikeById(@PathVariable int likeId) {
+        return likeService.getLikeById(likeId);
+    }
+
     @PostMapping("/addLikeToTweets")
     public Like addLikeToTweets(@RequestBody SaveLikeRequestDto saveLikeRequestDto) {
         return likeService.addLikeToTweets(saveLikeRequestDto);
