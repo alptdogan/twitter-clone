@@ -58,7 +58,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody SaveUserRequestDto registerRequest) {
+    public ResponseEntity<AuthResponse> register(@RequestBody SaveUserRequestDto registerRequest) throws Exception {
         AuthResponse authResponse = new AuthResponse();
         if(userService.getUserByUserName(registerRequest.getUsername()) != null) {
             authResponse.setMessage("Username already in use.");
