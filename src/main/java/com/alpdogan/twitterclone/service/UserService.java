@@ -5,7 +5,6 @@ import com.alpdogan.twitterclone.entity.User;
 import com.alpdogan.twitterclone.repository.UserRepository;
 import com.alpdogan.twitterclone.dto.response.UserResponseDto;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,11 +16,11 @@ public class UserService {
 
     private UserRepository userRepository;
 
-    @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
     public List<UserResponseDto> getAllUsers() {
