@@ -1,10 +1,13 @@
 package com.alpdogan.twitterclone.controller;
 
+import com.alpdogan.twitterclone.configuration.ResponseModel;
 import com.alpdogan.twitterclone.dto.request.SaveUserRequestDto;
 import com.alpdogan.twitterclone.dto.request.UpdateUserRequestDto;
 import com.alpdogan.twitterclone.dto.response.UserResponseDto;
 import com.alpdogan.twitterclone.entity.User;
 import com.alpdogan.twitterclone.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,13 +28,23 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public User getUserById(@PathVariable int userId) {
-        return userService.getUserById(userId);
+    public ResponseEntity<?> getUserById(@PathVariable int userId) {
+        try {
+            User user = userService.getUserById(userId);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseModel("No User Found With The Specified ID."), HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/addUser")
-    public User addUser(@RequestBody User user) {
-        return userService.addUser(user);
+    public ResponseEntity<String> addUser(@RequestBody User user) {
+        try {
+            String userSaveDescription = userService.addUser(user);
+            return new ResponseEntity<>(userSaveDescription, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("updateUser")

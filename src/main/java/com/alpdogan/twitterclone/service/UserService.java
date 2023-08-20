@@ -42,15 +42,25 @@ public class UserService {
 
     }
 
-    public User getUserById(int userId) {
-        return userRepository.findById(userId).orElse(null);
+    public User getUserById(int userId) throws Exception {
+
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if(userOptional.isPresent()) {
+            return userRepository.findById(userId).get();
+        }else {
+            throw new Exception();
+        }
     }
 
-    public User addUser(User user) {
+    public String addUser(User user) throws Exception {
 
-//        User user = modelMapper.map(saveUserRequestDto, User.class);
-
-        return userRepository.save(user);
+        if(user.getUsername().isBlank()) {
+            throw new Exception("Username Cannot Be Empty.");
+        }else {
+            userRepository.save(user);
+            return user.getUsername() + " Has Been Created Successfully.";
+        }
 
     }
 
