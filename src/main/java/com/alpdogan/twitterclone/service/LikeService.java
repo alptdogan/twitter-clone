@@ -11,6 +11,7 @@ import com.alpdogan.twitterclone.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,6 +30,22 @@ public class LikeService {
         this.tweetRepository = tweetRepository;
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+    }
+
+    public List<LikeResponseDto> getAllLikes(){
+
+        Iterable<Like> likes = likeRepository.findAll();
+        List<LikeResponseDto> likeResponseDtos = new ArrayList<>();
+
+        if (likes.iterator().hasNext()) {
+            for (Like like : likes) {
+                LikeResponseDto likeResponseDto = modelMapper.map(like, LikeResponseDto.class);
+                likeResponseDtos.add(likeResponseDto);
+            }
+        }
+
+        return likeResponseDtos;
+
     }
 
     public Like getLikeById(int likeId) {
