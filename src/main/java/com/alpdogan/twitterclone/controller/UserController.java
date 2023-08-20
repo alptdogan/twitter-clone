@@ -30,8 +30,8 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public User addUser(@RequestBody SaveUserRequestDto saveUserRequestDto) {
-        return userService.addUser(saveUserRequestDto);
+    public User addUser(@RequestBody User user) {
+        return userService.addUser(user);
     }
 
     @PutMapping("updateUser")

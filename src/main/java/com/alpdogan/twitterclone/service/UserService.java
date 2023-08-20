@@ -1,6 +1,5 @@
 package com.alpdogan.twitterclone.service;
 
-import com.alpdogan.twitterclone.dto.request.SaveUserRequestDto;
 import com.alpdogan.twitterclone.dto.request.UpdateUserRequestDto;
 import com.alpdogan.twitterclone.entity.User;
 import com.alpdogan.twitterclone.repository.UserRepository;
@@ -48,9 +47,9 @@ public class UserService {
         return userRepository.findById(userId).orElse(null);
     }
 
-    public User addUser(SaveUserRequestDto saveUserRequestDto) {
+    public User addUser(User user) {
 
-        User user = modelMapper.map(saveUserRequestDto, User.class);
+//        User user = modelMapper.map(saveUserRequestDto, User.class);
 
         return userRepository.save(user);
 
@@ -77,6 +76,10 @@ public class UserService {
 
     public void deleteUserById(int userId) {
         userRepository.deleteById(userId);
+    }
+
+    public User getUserByUserName(String username) {
+        return userRepository.findByUsername(username);
     }
 
 }
