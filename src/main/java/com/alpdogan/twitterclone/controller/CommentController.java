@@ -44,13 +44,23 @@ public class CommentController {
     }
 
     @PostMapping("/addComment")
-    public Comment addComment(@RequestBody SaveCommentRequestDto saveCommentRequestDto) {
-        return commentService.addComment(saveCommentRequestDto);
+    public ResponseEntity<String> addComment(@RequestBody SaveCommentRequestDto saveCommentRequestDto) {
+        try {
+            String commentSaveDescription = commentService.addComment(saveCommentRequestDto);
+            return new ResponseEntity<>(commentSaveDescription, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @DeleteMapping("/deleteCommentById")
-    public void deleteCommentById(@PathVariable int commentId) {
-        commentService.deleteCommentById(commentId);
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<String> deleteCommentById(@PathVariable int commentId) {
+        try {
+            String deleteCommentDescription = commentService.deleteCommentById(commentId);
+            return new ResponseEntity<>(deleteCommentDescription, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
 }

@@ -10,8 +10,6 @@ import com.alpdogan.twitterclone.repository.TweetRepository;
 import com.alpdogan.twitterclone.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +65,7 @@ public class CommentService {
 
     }
 
-    public Comment addComment(SaveCommentRequestDto saveCommentRequestDto){
+    public String addComment(SaveCommentRequestDto saveCommentRequestDto) throws Exception {
 
         String textRequest = saveCommentRequestDto.getText();
         int userIdRequest = saveCommentRequestDto.getUserId();
@@ -83,13 +81,28 @@ public class CommentService {
         comment.setUser(user);
         comment.setTweet(tweet);
 
-        return commentRepository.save(comment);
-
+        if (comment.getText().isBlank()) {
+            throw new Exception("Comment Cannot Be Empty.");
+        }else if (comment.getText().length() > 140) {
+            throw new Exception("Comment Cannot Be Longer Than 140 Characters.");
+        }else {
+            commentRepository.save(comment);
+            return "Your Comment Has Been Successfully Posted.";
+        }
     }
 
-    @DeleteMapping("/{commentId}")
-    public void deleteCommentById(@PathVariable int commentId) {
-        commentRepository.deleteById(commentId);
+    public String deleteCommentById(int commentId) throws Exception {
+
+        Optional<Comment> commentOptional = commentRepository.findById(commentId);
+        Comment comment = commentOptional.get();
+
+        if (commentOptional.isPresent()) {
+            commentRepository.delete(comment);
+            return "Comment Has Been Deleted.";
+        }else {
+            throw new Exception("Cannot Find Any Comment To Delete With The Specified ID.");
+        }
+
     }
 
 }
