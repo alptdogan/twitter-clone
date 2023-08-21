@@ -53,8 +53,13 @@ public class TweetController {
     }
 
     @DeleteMapping("/{tweetId}")
-    public void deleteTweetById(@PathVariable int tweetId) {
-        tweetService.deleteTweetById(tweetId);
+    public ResponseEntity<String> deleteTweetById(@PathVariable int tweetId) {
+        try {
+            String deleteTweetDescription = tweetService.deleteTweetById(tweetId);
+            return new ResponseEntity<>(deleteTweetDescription, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
 }

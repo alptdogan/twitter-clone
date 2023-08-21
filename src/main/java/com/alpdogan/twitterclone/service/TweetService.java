@@ -80,8 +80,18 @@ public class TweetService {
 
     }
 
-    public void deleteTweetById(int tweetId){
-        tweetRepository.deleteById(tweetId);
+    public String deleteTweetById(int tweetId) throws Exception {
+
+        Optional<Tweet> tweetOptional = tweetRepository.findById(tweetId);
+        Tweet tweet = tweetOptional.get();
+
+        if (tweetOptional.isPresent()) {
+            tweetRepository.delete(tweet);
+            return "Tweet Has Been Deleted.";
+        }else {
+            throw new Exception("Cannot Find Any Tweet To Delete With The Specified ID.");
+        }
+
     }
 
 }
