@@ -27,7 +27,7 @@ public class TweetService {
         this.modelMapper = modelMapper;
     }
 
-    public List<TweetResponseDto> getAllTweets() {
+    public List<TweetResponseDto> getAllTweets() throws Exception {
 
         Iterable<Tweet> tweets = tweetRepository.findAll();
         List<TweetResponseDto> tweetResponseDtos = new ArrayList<>();
@@ -37,10 +37,10 @@ public class TweetService {
                 TweetResponseDto tweetResponseDto = modelMapper.map(tweet, TweetResponseDto.class);
                 tweetResponseDtos.add(tweetResponseDto);
             }
+            return tweetResponseDtos;
+        }else{
+            throw new Exception();
         }
-
-        return tweetResponseDtos;
-
     }
 
     public Tweet getTweetById(int tweetId) {
