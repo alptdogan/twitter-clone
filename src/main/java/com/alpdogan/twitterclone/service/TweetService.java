@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TweetService {
@@ -41,10 +42,19 @@ public class TweetService {
         }else{
             throw new Exception();
         }
+
     }
 
-    public Tweet getTweetById(int tweetId) {
-        return tweetRepository.findById(tweetId).orElse(null);
+    public Optional<Tweet> getTweetById(int tweetId) throws Exception {
+
+        Optional<Tweet> tweetOptional = tweetRepository.findById(tweetId);
+
+        if (tweetOptional.isPresent()){
+            return tweetRepository.findById(tweetId);
+        }else {
+            throw new Exception();
+        }
+
     }
 
     public Tweet addTweet(SaveTweetRequestDto saveTweetRequestDto) {

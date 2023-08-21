@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/tweets")
@@ -24,20 +25,21 @@ public class TweetController {
     @GetMapping
     public ResponseEntity<?> getAllTweets() {
         try {
-
             List<TweetResponseDto> tweetResponseDtos = tweetService.getAllTweets();
-
             return new ResponseEntity<>(tweetResponseDtos, HttpStatus.OK);
-
         }catch (Exception e) {
-
             return new ResponseEntity<>(new ResponseModel("There Is No Tweets To Be Listed."), HttpStatus.NOT_FOUND);
-
-        }    }
+        }
+    }
 
     @GetMapping("/{tweetId}")
-    public Tweet getTweetById(@PathVariable int tweetId) {
-        return tweetService.getTweetById(tweetId);
+    public ResponseEntity<?> getTweetById(@PathVariable int tweetId) {
+        try {
+            Optional<Tweet> tweet = tweetService.getTweetById(tweetId);
+            return new ResponseEntity<>(tweet, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(new ResponseModel("No Tweet Found With The Specified ID."), HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/addTweet")
