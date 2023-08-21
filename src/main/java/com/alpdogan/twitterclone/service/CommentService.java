@@ -55,8 +55,16 @@ public class CommentService {
 
     }
 
-    public Comment getCommentById(int commentId) {
-        return commentRepository.findById(commentId).orElse(null);
+    public Optional<Comment> getCommentById(int commentId) throws Exception {
+
+        Optional<Comment> commentOptional = commentRepository.findById(commentId);
+
+        if (commentOptional.isPresent()){
+            return commentRepository.findById(commentId);
+        }else {
+            throw new Exception();
+        }
+
     }
 
     public Comment addComment(SaveCommentRequestDto saveCommentRequestDto){

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/comments")
@@ -32,8 +33,14 @@ public class CommentController {
     }
 
     @GetMapping("/{commentId}")
-    public Comment getCommentById(@PathVariable int commentId) {
-        return commentService.getCommentById(commentId);
+    public ResponseEntity<?>  getCommentById(@PathVariable int commentId) {
+        try {
+            Optional<Comment> comment = commentService.getCommentById(commentId);
+            return new ResponseEntity<>(comment, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(new ResponseModel("No Comment Found With The Specified ID."), HttpStatus.NOT_FOUND);
+
+        }
     }
 
     @PostMapping("/addComment")
