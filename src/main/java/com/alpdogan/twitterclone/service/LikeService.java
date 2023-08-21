@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LikeService {
@@ -32,7 +33,7 @@ public class LikeService {
         this.modelMapper = modelMapper;
     }
 
-    public List<LikeResponseDto> getAllLikes(){
+    public List<LikeResponseDto> getAllLikes() throws Exception {
 
         Iterable<Like> likes = likeRepository.findAll();
         List<LikeResponseDto> likeResponseDtos = new ArrayList<>();
@@ -42,14 +43,23 @@ public class LikeService {
                 LikeResponseDto likeResponseDto = modelMapper.map(like, LikeResponseDto.class);
                 likeResponseDtos.add(likeResponseDto);
             }
+            return likeResponseDtos;
+        }else {
+            throw new Exception();
         }
-
-        return likeResponseDtos;
 
     }
 
-    public Like getLikeById(int likeId) {
-        return likeRepository.findById(likeId).orElse(null);
+    public Optional<Like> getLikeById(int likeId) throws Exception {
+
+        Optional<Like> likeOptional = likeRepository.findById(likeId);
+
+        if (likeOptional.isPresent()){
+            return likeRepository.findById(likeId);
+        }else {
+            throw new Exception();
+        }
+
     }
 
     // here I can add likes to tweets but not to comments yet. I may add another method for comments or set a logic for deciding wheter it is a tweet or comment to add a like.
@@ -69,8 +79,17 @@ public class LikeService {
         return likeRepository.save(like);
     }
 
-    public void deleteLikeById(int likeId) {
-        likeRepository.deleteById(likeId);
+    public String deleteLikeById(int likeId) throws Exception {
+
+        Optional<Like> likeOptional = likeRepository.findById(likeId);
+        Like like = likeOptional.get();
+
+        if (likeOptional.isPresent()) {
+            likeRepository.delete(like);
+            return "Your Like Has Been Deleted.";
+        }else {
+            throw new Exception("Cannot Find Any Likes To Delete With The Specified ID.");
+        }
     }
 
 }
