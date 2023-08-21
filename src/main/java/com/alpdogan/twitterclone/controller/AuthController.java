@@ -50,7 +50,9 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(auth);
         String jwtToken = jwtTokenProvider.generateJwtToken(auth);
         User user = userService.getUserByUserName(loginRequest.getUsername());
+
         AuthResponse authResponse = new AuthResponse();
+        authResponse.setMessage("User successfully logged in.");
         authResponse.setAccessToken("Bearer " + jwtToken);
         authResponse.setRefreshToken(refreshTokenService.createRefreshToken(user));
         authResponse.setUserId(user.getId());
