@@ -38,7 +38,7 @@ public class CommentService {
 
     }
 
-    public List<CommentResponseDto> getAllComments(){
+    public List<CommentResponseDto> getAllComments() throws Exception {
 
         Iterable<Comment> comments = commentRepository.findAll();
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
@@ -48,9 +48,10 @@ public class CommentService {
                 CommentResponseDto commentResponseDto = modelMapper.map(comment, CommentResponseDto.class);
                 commentResponseDtos.add(commentResponseDto);
             }
+            return commentResponseDtos;
+        }else {
+            throw new Exception();
         }
-
-        return commentResponseDtos;
 
     }
 
