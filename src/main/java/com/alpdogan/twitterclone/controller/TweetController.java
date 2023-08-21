@@ -43,8 +43,13 @@ public class TweetController {
     }
 
     @PostMapping("/addTweet")
-    public Tweet addTweet(@RequestBody SaveTweetRequestDto saveTweetRequestDto){
-        return tweetService.addTweet(saveTweetRequestDto);
+    public ResponseEntity<String> addTweet(@RequestBody SaveTweetRequestDto saveTweetRequestDto){
+        try {
+            String tweetSaveDescription = tweetService.addTweet(saveTweetRequestDto);
+            return new ResponseEntity<>(tweetSaveDescription, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{tweetId}")

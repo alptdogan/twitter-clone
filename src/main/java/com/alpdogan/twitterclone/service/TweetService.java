@@ -57,7 +57,7 @@ public class TweetService {
 
     }
 
-    public Tweet addTweet(SaveTweetRequestDto saveTweetRequestDto) {
+    public String addTweet(SaveTweetRequestDto saveTweetRequestDto) throws Exception {
 
         String textRequest = saveTweetRequestDto.getText();
         int userIdRequest = saveTweetRequestDto.getUserId();
@@ -69,7 +69,14 @@ public class TweetService {
         tweet.setText(textRequest);
         tweet.setUser(user);
 
-        return tweetRepository.save(tweet);
+        if (tweet.getText().isBlank()) {
+            throw new Exception("Tweet Text Cannot Be Empty.");
+        }else if (tweet.getText().length() > 140) {
+            throw new Exception("Tweet Text Cannot Be Longer Than 140 Characters.");
+        }else {
+            tweetRepository.save(tweet);
+            return "Your Tweet Has Been Successfully Posted.";
+        }
 
     }
 
